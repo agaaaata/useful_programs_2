@@ -1,0 +1,172 @@
+\documentclass[10pt,aspectratio=169]{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+
+\usetheme{Madrid}
+\usecolortheme{whale}
+
+\title[Szczegolna Teoria Wzglednosci]{Podstawy Szczegolnej Teorii Wzglednosci}
+\subtitle{Czas, przestrzen i rownowaznosc masy oraz energii}
+\author[Jan Kowalski]{Jan Kowalski}
+\institute[Uniwersytet]{Instytut Fizyki Teoretycznej}
+\date{\today}
+
+\begin{document}
+
+% Slajd 1: Tytulowy
+\begin{frame}
+    \titlepage
+\end{frame}
+
+% Slajd 2: Spis tresci
+\begin{frame}{\frametitle{Plan Prezentacji}}
+    \tableofcontents
+\end{frame}
+
+% Slajd 3: Postulaty
+\section{Postulaty Einsteina}
+\begin{frame}{\frametitle{Dwa Postulaty Szczegolnej Teorii Wzglednosci}}
+    \begin{block}{I Postulat: Zasada Wzglednosci}
+        Prawa fizyki sa jednakowe we wszystkich inercjalnych ukladach odniesienia. Zadne doswiadczenie fizyczne przeprowadzone wewnatrz ukladu nie pozwala stwierdzic, czy uklad ten spoczywa, czy porusza sie ruchem jednostajnym prostoliniowym.
+    \end{block}
+
+    \vspace{0.3cm}
+    
+    \begin{alertblock}{II Postulat: Niezmiennosc Predkosci Swiatla}
+        Predkosc swiatla w prozni $c$ ma taka sama wartosc we wszystkich inercjalnych ukladach odniesienia:
+        \[
+            c \approx 299\,792\,458\ \text{m/s}
+        \]
+    \end{alertblock}
+\end{frame}
+
+% Slajd 4: Transformacja Lorentza (Dwie kolumny)
+\section{Kinematyka Relatywistyczna}
+\begin{frame}{\frametitle{Transformacja Lorentza}}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Rownania Transformacji}
+                Przejscie z ukladu $S$ do $S'$:
+                \begin{itemize}
+                    \item $x' = \gamma (x - vt)$
+                    \item $y' = y$
+                    \item $z' = z$
+                    \item $t' = \gamma \left(t - \frac{vx}{c^2}\right)$
+                \end{itemize}
+            \end{block}
+        \end{column}
+        
+        \begin{column}{0.48\textwidth}
+            \begin{exampleblock}{Czynnik Lorentza}
+                Wspolczynnik skalujacy:
+                \[
+                    \gamma = \frac{1}{\sqrt{1 - \frac{v^2}{c^2}}}
+                \]
+                \begin{itemize}
+                    \item Dla $v \ll c$: $\gamma \approx 1$
+                    \item Dla $v \to c$: $\gamma \to \infty$
+                \end{itemize}
+            \end{exampleblock}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% Slajd 5: Dylatacja i Kontrakcja
+\begin{frame}{\frametitle{Dylatacja Czasu i Skrocenie Lorentza}}
+    \begin{block}{Dylatacja Czasu}
+        Zegar w ruchu tyka wolniej z punktu widzenia obserwatora:
+        \[
+            \Delta t = \gamma \Delta t_0 = \frac{\Delta t_0}{\sqrt{1 - \frac{v^2}{c^2}}}
+        \]
+    \end{block}
+
+    \begin{block}{Kontrakcja Dlugosci}
+        Obiekty poruszajace sie ulegaja skroceniu w kierunku ruchu:
+        \[
+            L = \frac{L_0}{\gamma} = L_0 \sqrt{1 - \frac{v^2}{c^2}}
+        \]
+    \end{block}
+\end{frame}
+
+% Slajd 6: Czasoprzestrzen
+\begin{frame}{\frametitle{Struktura Czasoprzestrzeni}}
+    \begin{block}{Interwal Czasoprzestrzenny}
+        Niezmiennik transformacji Lorentza miedzy dwoma zdarzeniami:
+        \[
+            (\Delta s)^2 = (c \Delta t)^2 - (\Delta x)^2 - (\Delta y)^2 - (\Delta z)^2 = \text{const}
+        \]
+    \end{block}
+
+    \begin{alertblock}{Typy Interwalow}
+        \begin{itemize}
+            \item $(\Delta s)^2 > 0$: Czasopodobny (mozliwy zwiazek przyczynowy)
+            \item $(\Delta s)^2 = 0$: Swietlny (polaczenie sygnalem swietlnym)
+            \item $(\Delta s)^2 < 0$: Przestrzeniopodobny (brak zwiazku przyczynowego)
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+% Slajd 7: Dynamika Relatywistyczna
+\section{Dynamika i Rownowaznosc Masy-Energii}
+\begin{frame}{\frametitle{Ped i Energia Relatywistyczna}}
+    \begin{enumerate}
+        \item \textbf{Ped relatywistyczny:}
+        \[
+            \vec{p} = \gamma m \vec{v} = \frac{m \vec{v}}{\sqrt{1 - \frac{v^2}{c^2}}}
+        \]
+
+        \item \textbf{Calkowita energia relatywistyczna:}
+        \[
+            E = \gamma m c^2 = E_k + m c^2
+        \]
+
+        \item \textbf{Energia spoczynkowa ($v=0$):}
+        \[
+            E_0 = m c^2
+        \]
+    \end{enumerate}
+\end{frame}
+
+% Slajd 8: Relacja Energia-Ped
+\begin{frame}{\frametitle{Relacja Energia--Ped}}
+    \begin{block}{Zwiazek Energii i Pedu}
+        Rownanie prawdziwe rowniez dla czastek bezmasowych ($m=0$, np. fotonow):
+        \[
+            E^2 = (p c)^2 + (m c^2)^2
+        \]
+    \end{block}
+
+    \begin{exampleblock}{Dla fotona ($m=0$):}
+        \[
+            E = p c \implies p = \frac{E}{c} = \frac{h \nu}{c}
+        \]
+    \end{exampleblock}
+\end{frame}
+
+% Slajd 9: Zastosowania
+\section{Weryfikacja i Zastosowania}
+\begin{frame}{\frametitle{Dowody Doswiadczalne i Zastosowania}}
+    \begin{exampleblock}{Potwierdzenie w Fizyce i Technice}
+        \begin{itemize}
+            \item \textbf{Czas zycia mionow:} Miony atmosferyczne docieraja do Ziemi dzieki dylatacji czasu.
+            \item \textbf{Akceleratory czastek (LHC):} Przyśpieszanie czastek wymaga uwzglednienia wzrostu pedu relatywistycznego.
+            \item \textbf{Systemy GPS:} Korekcja czasu w zegarach satelitarnych.
+            \item \textbf{Reakcje jadrowe:} Zamiana masy w energie wedlug wzoru $\Delta E = \Delta m c^2$.
+        \end{itemize}
+    \end{exampleblock}
+\end{frame}
+
+% Slajd 10: Zakonczenie
+\begin{frame}
+    \centering
+    \Huge \textbf{Dziekuje za uwage!}
+    
+    \vspace{1cm}
+    
+    \Large Czy sa jakies pytania?
+\end{frame}
+
+\end{document}
