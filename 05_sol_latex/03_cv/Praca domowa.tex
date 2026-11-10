@@ -1,0 +1,196 @@
+\documentclass[11pt,a4paper]{article}
+
+% Pakiety językowe i kodowanie
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+% Pakiety matematyczne (DODANO PAKIET ARRAY)
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{array}
+
+% Formatting i układy
+\usepackage[top=2.2cm,bottom=2.5cm,left=2.2cm,right=2.2cm]{geometry}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+
+% Pakiety graficzne i kolorystyczne
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{skins,breakable}
+
+% --- DEFINICJA PALETY RÓŻOWO-BRĄZOWEJ ---
+\definecolor{MainColor}{HTML}{5D4037}    % Głęboki ciepły brąz
+\definecolor{AccentColor}{HTML}{D81B60}  % Malinowy / róż akcentowy
+\definecolor{TitleBg}{HTML}{C2185B}      % Ciemniejszy róż dla nagłówka ramki
+\definecolor{LightBg}{HTML}{FDF2F4}      % Pudrowy jasnoróżowy dla tła
+\definecolor{DarkText}{HTML}{3E2723}     % Ciemnobrązowy tekst główny
+
+% Ustawienie koloru tekstu podstawowego
+\color{DarkText}
+
+% Konfiguracja nagłówka i stopki
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\color{MainColor}Rozwiązania zadań}
+\rhead{\color{MainColor}\textbf{Wstęp do Algebry} --- Lista nr 3}
+\cfoot{\color{MainColor}\thepage}
+\renewcommand{\headrulewidth}{0.8pt}
+
+% Konfiguracja stylów ramek zadań (tcolorbox)
+\tcbset{
+    enhanced,
+    colback=LightBg,
+    colframe=MainColor,
+    coltitle=white,
+    fonttitle=\bfseries\sffamily,
+    boxrule=1pt,
+    arc=4pt,
+    left=10pt, right=10pt, top=8pt, bottom=8pt,
+    breakable
+}
+
+\newenvironment{zadanie}[1]{%
+    \begin{tcolorbox}[title={Zadanie #1}, colbacktitle=TitleBg]
+}{%
+    \end{tcolorbox}\vspace{0.3cm}%
+}
+
+\newenvironment{rozwiazanie}{%
+    \par\noindent{\color{AccentColor}\textbf{\textsf{Rozwiązanie:}}}\par\smallskip
+}{%
+    \vspace{0.4cm}{\color{MainColor}\hrule height 0.5pt}\vspace{0.3cm}
+}
+
+% --- DOKUMENT GŁÓWNY ---
+\begin{document}
+
+% Nagłówek tytułowy
+\begin{center}
+    {\Huge \sffamily \bfseries \color{MainColor} Wstęp do Algebry}\\[0.2cm]
+    {\Large \sffamily \color{AccentColor} Rozwiązania Zadań --- Lista nr 3}\\[0.3cm]
+    {\color{MainColor}\rule{\textwidth}{1.5pt}}
+\end{center}
+
+\vspace{0.3cm}
+
+% --- ZADANIE 1 ---
+\begin{zadanie}{1}
+Dla macierzy zespolonej
+\[
+A = \begin{pmatrix} 2 & 1+i & 3 \\ 1-i & 0 & -2i \\ 4 & 2+i & -1 \end{pmatrix}
+\]
+wyznaczyć macierze $S$ i $K$, takie że $A=S+K$, przy czym $S$ jest symetryczna, a $K$ antysymetryczna. Sprawdzić bezpośrednio, że $S^T = S$, $K^T = -K$ oraz $S+K = A$.
+\end{zadanie}
+
+\begin{rozwiazanie}
+Każdą macierz kwadratową $A$ można jednoznacznie przedstawić jako sumę części symetrycznej $S$ oraz antysymetrycznej $K$ za pomocą wzorów:
+\[
+S = \frac{1}{2}(A + A^T), \quad K = \frac{1}{2}(A - A^T).
+\]
+Wyznaczamy macierz transponowaną $A^T$:
+\[
+A^T = \begin{pmatrix} 2 & 1-i & 4 \\ 1+i & 0 & 2+i \\ 3 & -2i & -1 \end{pmatrix}.
+\]
+Obliczamy macierz symetryczną $S$:
+\[
+S = \frac{1}{2}\left[\begin{pmatrix} 2 & 1+i & 3 \\ 1-i & 0 & -2i \\ 4 & 2+i & -1 \end{pmatrix} + \begin{pmatrix} 2 & 1-i & 4 \\ 1+i & 0 & 2+i \\ 3 & -2i & -1 \end{pmatrix}\right] = \begin{pmatrix} 2 & 1 & \frac{7}{2} \\ 1 & 0 & 1-\frac{1}{2}i \\ \frac{7}{2} & 1-\frac{1}{2}i & -1 \end{pmatrix}.
+\]
+Obliczamy macierz antysymetryczną $K$:
+\[
+K = \frac{1}{2}\left[\begin{pmatrix} 2 & 1+i & 3 \\ 1-i & 0 & -2i \\ 4 & 2+i & -1 \end{pmatrix} - \begin{pmatrix} 2 & 1-i & 4 \\ 1+i & 0 & 2+i \\ 3 & -2i & -1 \end{pmatrix}\right] = \begin{pmatrix} 0 & i & -\frac{1}{2} \\ -i & 0 & -1-\frac{3}{2}i \\ \frac{1}{2} & 1+\frac{3}{2}i & 0 \end{pmatrix}.
+\]
+
+\textbf{Sprawdzenie warunków:}
+\begin{enumerate}[label=\alph*)]
+    \item $S^T = S$: Zamiana wierszy z kolumnami macierzy $S$ daje dokładnie tę samą macierz $S$.
+    \item $K^T = -K$: Transponując $K$, otrzymujemy macierz o przeciwnych znakach na wszystkich pozycjach.
+    \item $S + K = A$: Sumując elementy odpowiadające sobie w $S$ i $K$, natychmiast uzyskujemy macierz wejściową $A$.
+\end{enumerate}
+\end{rozwiazanie}
+
+% --- ZADANIE 2 ---
+\begin{zadanie}{2}
+Dla macierzy zespolonej
+\[
+A = \begin{pmatrix} 2+i & 1+2i & -i \\ 3-i & -1 & 2 \\ 4+i & i & 3-2i \end{pmatrix}
+\]
+wyznaczyć macierze $H$ i $Q$, takie że $A=H+Q$, przy czym $H$ jest hermitowska, a $Q$ antyhermitowska. Sprawdzić bezpośrednio, że $H^\dagger = H$, $Q^\dagger = -Q$ oraz $H+Q=A$. Następnie zapisać tę samą macierz w postaci $A=H+iG$, wyznaczyć macierz $G$ i sprawdzić, że $G^\dagger = G$.
+\end{zadanie}
+
+\begin{rozwiazanie}
+Część hermitowska $H$ i antyhermitowska $Q$ dane są wzorami:
+\[
+H = \frac{1}{2}(A + A^\dagger), \quad Q = \frac{1}{2}(A - A^\dagger),
+\]
+gdzie $A^\dagger = (\overline{A})^T$ to sprzężenie hermitowskie.
+\[
+A^\dagger = \begin{pmatrix} 2-i & 3+i & 4-i \\ 1-2i & -1 & -i \\ i & 2 & 3+2i \end{pmatrix}.
+\]
+Wyznaczamy macierz hermitowską $H$:
+\[
+H = \begin{pmatrix} 2 & 2+\frac{3}{2}i & 2-i \\ 2-\frac{3}{2}i & -1 & 1+\frac{1}{2}i \\ 2+i & 1-\frac{1}{2}i & 3 \end{pmatrix}.
+\]
+Wyznaczamy macierz antyhermitowską $Q$:
+\[
+Q = \begin{pmatrix} i & -\frac{1}{2}+\frac{1}{2}i & 2 \\ 1+\frac{1}{2}i & 0 & 1+\frac{1}{2}i \\ -2 & -1+\frac{1}{2}i & -2i \end{pmatrix}.
+\]
+Dla rozkładu $A = H + iG$ zauważmy, że $Q = iG$, co daje $G = -iQ$:
+\[
+G = \begin{pmatrix} 1 & \frac{1}{2}+\frac{1}{2}i & -2i \\ -\frac{1}{2}+\frac{1}{2}i & 0 & -\frac{1}{2}+i \\ 2i & -\frac{1}{2}-i & 2 \end{pmatrix}.
+\]
+Bezpośredni rachunek potwierdza, że $G^\dagger = G$.
+\end{rozwiazanie}
+
+% --- ZADANIE 3 ---
+\begin{zadanie}{3}
+Wyznaczyć macierz odwrotną do rzeczywistej macierzy
+\[
+A = \begin{pmatrix} 1 & 2 & 1 \\ 0 & 1 & 1 \\ 1 & 1 & 1 \end{pmatrix}
+\]
+metodą elementarnych przekształceń wierszy, sprowadzając $[A \mid I_3] \sim [I_3 \mid A^{-1}]$.
+\end{zadanie}
+
+\begin{rozwiazanie}
+Tworzymy macierz rozszerzoną $[A \mid I_3]$ i wykonujemy operacje elementarne krok po kroku:
+\begin{align*}
+\left(\begin{array}{ccc|ccc}
+1 & 2 & 1 & 1 & 0 & 0 \\
+0 & 1 & 1 & 0 & 1 & 0 \\
+1 & 1 & 1 & 0 & 0 & 1
+\end{array}\right)
+&\xrightarrow{w_3 \to w_3 - w_1}
+\left(\begin{array}{ccc|ccc}
+1 & 2 & 1 & 1 & 0 & 0 \\
+0 & 1 & 1 & 0 & 1 & 0 \\
+0 & -1 & 0 & -1 & 0 & 1
+\end{array}\right) \\
+&\xrightarrow{w_3 \to w_3 + w_2}
+\left(\begin{array}{ccc|ccc}
+1 & 2 & 1 & 1 & 0 & 0 \\
+0 & 1 & 1 & 0 & 1 & 0 \\
+0 & 0 & 1 & -1 & 1 & 1
+\end{array}\right) \\
+&\xrightarrow{\substack{w_1 \to w_1 - w_3 \\ w_2 \to w_2 - w_3}}
+\left(\begin{array}{ccc|ccc}
+1 & 2 & 0 & 2 & -1 & -1 \\
+0 & 1 & 0 & 1 & 0 & -1 \\
+0 & 0 & 1 & -1 & 1 & 1
+\end{array}\right) \\
+&\xrightarrow{w_1 \to w_1 - 2w_2}
+\left(\begin{array}{ccc|ccc}
+1 & 0 & 0 & 0 & -1 & 1 \\
+0 & 1 & 0 & 1 & 0 & -1 \\
+0 & 0 & 1 & -1 & 1 & 1
+\end{array}\right).
+\end{align*}
+Macierz odwrotna wynosi zatem:
+\[
+A^{-1} = \begin{pmatrix} 0 & -1 & 1 \\ 1 & 0 & -1 \\ -1 & 1 & 1 \end{pmatrix}.
+\]
+\end{rozwiazanie}
+
+\end{document}
