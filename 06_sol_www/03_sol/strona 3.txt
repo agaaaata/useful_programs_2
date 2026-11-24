@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zadanie 3 - Symulacja rzutu ukośnego</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1e272e;
+            color: #f5f6fa;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            margin-top: 0;
+            color: #00a8ff;
+        }
+        .main-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 1100px;
+            width: 100%;
+            justify-content: center;
+        }
+        .controls {
+            background: #2f3640;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .control-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        input[type="range"] {
+            width: 100%;
+            cursor: pointer;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        #btnStart {
+            background-color: #4cd137;
+            color: #1e272e;
+        }
+        #btnStart:hover { background-color: #44bd32; }
+        #btnReset {
+            background-color: #e84118;
+            color: white;
+        }
+        #btnReset:hover { background-color: #c23616; }
+        .checkboxes {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #485460;
+            font-size: 14px;
+        }
+        .checkboxes label {
+            justify-content: flex-start;
+            gap: 8px;
+            align-items: center;
+            cursor: pointer;
+        }
+        .stats {
+            margin-top: 15px;
+            background: #1e272e;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        canvas {
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            max-width: 100%;
+        }
+        .legend {
+            margin-top: 10px;
+            font-size: 13px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        .dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Symulacja: Rzut Ukośny</h1>
+
+    <div class="main-wrapper">
+        <div class="controls">
+            <div class="control-group">
+                <label>Prędkość początkowa (v₀): <span id="valV0">25 m/s</span></label>
+                <input type="range" id="sliderV0" min="5" max="50" value="25" step="1">
+            </div>
+
+            <div class="control-group">
+                <label>Kąt wyrzutu (α): <span id="valAngle">45°</span></label>
+                <input type="range" id="sliderAngle" min="0" max="90" value="45" step="1">
+            </div>
+
+            <div class="control-group">
+                <label>Wysokość początkowa (h₀): <span id="valH0">0 m</span></label>
+                <input type="range" id="sliderH0" min="0" max="40" value="0" step="1">
+            </div>
+
+            <div class="control-group">
+                <label>Przyspieszenie grawitacyjne (g): <span id="valG">9.8 m/s²</span></label>
+                <input type="range" id="sliderG" min="1.6" max="20" value="9.8" step="0.1">
+            </div>
+
+            <div class="buttons">
+                <button id="btnStart">Start / Pauza</button>
+                <button id="btnReset">Reset</button>
+            </div>
+
+            <div class="checkboxes">
+                <label><input type="checkbox" id="chkVel" checked> Wektor prędkości (v)</label>
+                <label><input type="checkbox" id="chkComp" checked> Składowe prędkości (vx, vy)</label>
+                <label><input type="checkbox" id="chkAcc" checked> Wektor przyspieszenia (g)</label>
+            </div>
+
+            <div class="stats" id="statsBox">
+                Czas lotu: 0.00 s<br>
+                Zasięg (x): 0.00 m<br>
+                Wysokość (y): 0.00 m<br>
+                Prędkość chwilowa: 0.00 m/s
+            </div>
+        </div>
+
+        <div>
+            <canvas id="simCanvas" width="720" height="460"></canvas>
+            <div class="legend">
+                <span><i class="dot" style="background:#0097e6;"></i>Wektor prędkości (v)</span>
+                <span><i class="dot" style="background:#8c7ae6;"></i>Składowe (vx, vy)</span>
+                <span><i class="dot" style="background:#e84118;"></i>Wektor przyspieszenia (g)</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('simCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Elementy UI
+        const sliderV0 = document.getElementById('sliderV0');
+        const sliderAngle = document.getElementById('sliderAngle');
+        const sliderH0 = document.getElementById('sliderH0');
+        const sliderG = document.getElementById('sliderG');
+
+        const valV0 = document.getElementById('valV0');
+        const valAngle = document.getElementById('valAngle');
+        const valH0 = document.getElementById('valH0');
+        const valG = document.getElementById('valG');
+
+        const chkVel = document.getElementById('chkVel');
+        const chkComp = document.getElementById('chkComp');
+        const chkAcc = document.getElementById('chkAcc');
+        const statsBox = document.getElementById('statsBox');
+
+        // Zmienne symulacji
+        let v0 = 25, angle = 45, h0 = 0, g = 9.8;
+        let t = 0;
+        let isRunning = false;
+        let path = [];
+        let animId = null;
+        let lastTimestamp = null;
+
+        // Skala rysowania (piksele na metr) i marginesy
+        const margin = 45;
+        const scale = 6.5; 
+
+        function updateParams() {
+            v0 = parseFloat(sliderV0.value);
+            angle = parseFloat(sliderAngle.value);
+            h0 = parseFloat(sliderH0.value);
+            g = parseFloat(sliderG.value);
+
+            valV0.textContent = `${v0} m/s`;
+            valAngle.textContent = `${angle}°`;
+            valH0.textContent = `${h0} m`;
+            valG.textContent = `${g.toFixed(1)} m/s²`;
+
+            if (!isRunning && t === 0) {
+                resetSimulation();
+            }
+        }
+
+        function resetSimulation() {
+            isRunning = false;
+            t = 0;
+            path = [];
+            lastTimestamp = null;
+            if (animId) cancelAnimationFrame(animId);
+            calculateAndDraw();
+        }
+
+        function getPhysicsState(time) {
+            const rad = angle * Math.PI / 180;
+            const vx = v0 * Math.cos(rad);
+            const vy0 = v0 * Math.sin(rad);
+
+            const x = vx * time;
+            const y = h0 + vy0 * time - 0.5 * g * time * time;
+            const vy = vy0 - g * time;
+            const v = Math.sqrt(vx * vx + vy * vy);
+
+            return { x, y, vx, vy, v };
+        }
+
+        function drawArrow(fromX, fromY, toX, toY, color, label) {
+            const headlen = 9;
+            const dx = toX - fromX;
+            const dy = toY - fromY;
+            const len = Math.sqrt(dx * dx + dy * dy);
+            if (len < 3) return;
+
+            const ang = Math.atan2(dy, dx);
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.lineWidth = 2.5;
+
+            ctx.beginPath();
+            ctx.moveTo(fromX, fromY);
+            ctx.lineTo(toX, toY);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(toX, toY);
+            ctx.lineTo(toX - headlen * Math.cos(ang - Math.PI / 6), toY - headlen * Math.sin(ang - Math.PI / 6));
+            ctx.lineTo(toX - headlen * Math.cos(ang + Math.PI / 6), toY - headlen * Math.sin(ang + Math.PI / 6));
+            ctx.closePath();
+            ctx.fill();
+
+            if (label) {
+                ctx.font = 'bold 12px sans-serif';
+                ctx.fillText(label, toX + 6, toY - 6);
+            }
+        }
+
+        function drawGrid() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const groundY = canvas.height - margin;
+
+            // Siatka co 10m
+            ctx.strokeStyle = '#ecf0f1';
+            ctx.lineWidth = 1;
+            ctx.fillStyle = '#7f8c8d';
+            ctx.font = '11px sans-serif';
+
+            for (let m = 0; m <= 100; m += 10) {
+                const px = margin + m * scale;
+                if (px < canvas.width - 10) {
+                    ctx.beginPath();
+                    ctx.moveTo(px, 10);
+                    ctx.lineTo(px, groundY);
+                    ctx.stroke();
+                    ctx.fillText(`${m}m`, px - 10, groundY + 18);
+                }
+
+                const py = groundY - m * scale;
+                if (py > 10) {
+                    ctx.beginPath();
+                    ctx.moveTo(margin, py);
+                    ctx.lineTo(canvas.width - 10, py);
+                    ctx.stroke();
+                    if (m > 0) ctx.fillText(`${m}m`, 10, py + 4);
+                }
+            }
+
+            // Osie główne
+            ctx.strokeStyle = '#2f3640';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(margin, 10);
+            ctx.lineTo(margin, groundY);
+            ctx.lineTo(canvas.width - 10, groundY);
+            ctx.stroke();
+        }
+
+        function calculateAndDraw() {
+            drawGrid();
+            const groundY = canvas.height - margin;
+
+            // Rysowanie teoretycznej trajektorii przerywanej (podgląd przed startem)
+            ctx.save();
+            ctx.setLineDash([5, 5]);
+            ctx.strokeStyle = '#bdc3c7';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            let simT = 0;
+            while (true) {
+                const st = getPhysicsState(simT);
+                if (st.y < 0 && simT > 0) break;
+                const px = margin + st.x * scale;
+                const py = groundY - st.y * scale;
+                if (simT === 0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+                simT += 0.05;
+                if (px > canvas.width) break;
+            }
+            ctx.stroke();
+            ctx.restore();
+
+            // Rysowanie przebytej ścieżki
+            if (path.length > 1) {
+                ctx.strokeStyle = '#2ecc71';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                path.forEach((pt, idx) => {
+                    const px = margin + pt.x * scale;
+                    const py = groundY - pt.y * scale;
+                    if (idx === 0) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                });
+                ctx.stroke();
+            }
+
+            // Aktualny stan piłki
+            const state = getPhysicsState(t);
+            const ballX = margin + state.x * scale;
+            const ballY = groundY - Math.max(0, state.y) * scale;
+
+            // Rysowanie piłki
+            ctx.fillStyle = '#2f3640';
+            ctx.beginPath();
+            ctx.arc(ballX, ballY, 7, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Wektory (skalowane wizualnie)
+            const vScale = 2.2;
+            const gScale = 4.5;
+
+            if (chkComp.checked) {
+                drawArrow(ballX, ballY, ballX + state.vx * vScale, ballY, '#8c7ae6', 'vx');
+                drawArrow(ballX, ballY, ballX, ballY - state.vy * vScale, '#8c7ae6', 'vy');
+            }
+            if (chkVel.checked) {
+                drawArrow(ballX, ballY, ballX + state.vx * vScale, ballY - state.vy * vScale, '#0097e6', 'v');
+            }
+            if (chkAcc.checked) {
+                drawArrow(ballX, ballY, ballX, ballY + g * gScale, '#e84118', 'g');
+            }
+
+            // Aktualizacja statystyk
+            statsBox.innerHTML = `
+                Czas lotu: <b>${t.toFixed(2)} s</b><br>
+                Zasięg (x): <b>${state.x.toFixed(2)} m</b><br>
+                Wysokość (y): <b>${Math.max(0, state.y).toFixed(2)} m</b><br>
+                Prędkość chwilowa: <b>${state.v.toFixed(2)} m/s</b>
+            `;
+        }
+
+        function loop(timestamp) {
+            if (!isRunning) return;
+            if (!lastTimestamp) lastTimestamp = timestamp;
+            const dt = (timestamp - lastTimestamp) / 1000;
+            lastTimestamp = timestamp;
+
+            t += dt;
+            const state = getPhysicsState(t);
+
+            if (state.y <= 0 && t > 0.05) {
+                // Dokładne wyliczenie czasu uderzenia o ziemię (y = 0)
+                const rad = angle * Math.PI / 180;
+                const vy0 = v0 * Math.sin(rad);
+                t = (vy0 + Math.sqrt(vy0 * vy0 + 2 * g * h0)) / g;
+                const finalState = getPhysicsState(t);
+                path.push({ x: finalState.x, y: 0 });
+                isRunning = false;
+                calculateAndDraw();
+                return;
+            }
+
+            path.push({ x: state.x, y: state.y });
+            calculateAndDraw();
+            animId = requestAnimationFrame(loop);
+        }
+
+        // Nasłuchiwanie zdarzeń
+        [sliderV0, sliderAngle, sliderH0, sliderG].forEach(s => {
+            s.addEventListener('input', () => {
+                if (isRunning) resetSimulation();
+                updateParams();
+            });
+        });
+
+        [chkVel, chkComp, chkAcc].forEach(c => {
+            c.addEventListener('change', calculateAndDraw);
+        });
+
+        document.getElementById('btnStart').addEventListener('click', () => {
+            const state = getPhysicsState(t);
+            if (state.y <= 0 && t > 0) {
+                resetSimulation();
+            }
+            isRunning = !isRunning;
+            if (isRunning) {
+                lastTimestamp = null;
+                animId = requestAnimationFrame(loop);
+            }
+        });
+
+        document.getElementById('btnReset').addEventListener('click', resetSimulation);
+
+        // Inicjalizacja
+        updateParams();
+    </script>
+</body>
+</html>
