@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zadanie 1 - Prosta strona HTML</title>
+</head>
+<body>
+
+    <h1>Podstawy kinematyki i fizyki klasycznej</h1>
+
+    <p>Kinematyka to dział mechaniki zajmujący się geometrycznym opisem ruchu ciał bez uwzględniania jego przyczyn, takich jak siły czy masa. Podstawowymi wielkościami opisującymi ruch są położenie, prędkość oraz przyspieszenie.</p>
+
+    <p>Jednym z najciekawszych zagadnień kinematyki w polu grawitacyjnym Ziemi jest rzut ukośny, który stanowi złożenie dwóch niezależnych ruchów: jednostajnego prostoliniowego w poziomie oraz jednostajnie zmiennego w pionie.</p>
+
+    <h2>Najważniejsze rodzaje rzutów:</h2>
+    <ul>
+        <li>Rzut pionowy (w górę lub w dół)</li>
+        <li>Rzut poziomy</li>
+        <li>Rzut ukośny</li>
+    </ul>
+
+    <h2>Porównanie wybranych parametrów ruchu</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Kierunek ruchu</th>
+                <th>Rodzaj ruchu</th>
+                <th>Przyspieszenie</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Oś pozioma (X)</td>
+                <td>Jednostajny prostoliniowy</td>
+                <td>0 m/s²</td>
+            </tr>
+            <tr>
+                <td>Oś pionowa (Y)</td>
+                <td>Jednostajnie zmienny</td>
+                <td>-9,81 m/s² (grawitacja)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>Więcej informacji teoretycznych znajdziesz na <a href="https://pl.wikipedia.org/wiki/Rzut_uko%C5%9Bny_(fizyka)" target="_blank">Wikipedii w artykule o rzucie ukośnym</a>.</p>
+
+</body>
+</html>
